@@ -110,12 +110,14 @@
 
             <div id="readme" class="Box Box--condensed instapaper_body md js-code-block-container">
               {% if title or filename %}
-                <div class="Box-header d-flex flex-items-center flex-justify-between px-2">
-                  <h3 class="Box-title pr-3">
-                    <span class="octicon octicon-book"></span>
-                    {{ title or filename }}
-                  </h3>
-                </div>
+                {% if header %}
+                  <div class="Box-header d-flex flex-items-center flex-justify-between px-2">
+                    <h3 class="Box-title pr-3">
+                      <span class="octicon octicon-book"></span>
+                      {{ title or filename }}
+                    </h3>
+                  </div>
+                {% endif %}
               {% endif %}
               <div class="Box-body">
                 <article id="grip-content" class="markdown-body entry-content p-5" itemprop="text">

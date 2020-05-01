@@ -11,7 +11,7 @@ from .renderers import GitHubRenderer, OfflineRenderer
 
 
 def create_app(path=None, user_content=False, context=None, username=None,
-               password=None, render_offline=False, render_wide=False,
+               password=None, render_offline=False, render_wide=False, render_header=True,
                render_inline=False, api_url=None, title=None, text=None,
                autorefresh=None, quiet=None, grip_class=None):
     """
@@ -42,20 +42,20 @@ def create_app(path=None, user_content=False, context=None, username=None,
     auth = (username, password) if username or password else None
 
     # Create the customized app with default asset manager
-    return grip_class(source, auth, renderer, None, render_wide,
+    return grip_class(source, auth, renderer, None, render_wide, render_header,
                       render_inline, title, autorefresh, quiet)
 
 
 def serve(path=None, host=None, port=None, user_content=False, context=None,
           username=None, password=None, render_offline=False,
-          render_wide=False, render_inline=False, api_url=None, title=None,
+          render_wide=False, render_header=True, render_inline=False, api_url=None, title=None,
           autorefresh=True, browser=False, quiet=None, grip_class=None):
     """
     Starts a server to render the specified file or directory containing
     a README.
     """
     app = create_app(path, user_content, context, username, password,
-                     render_offline, render_wide, render_inline, api_url,
+                     render_offline, render_wide, render_header, render_inline, api_url,
                      title, None, autorefresh, quiet, grip_class)
     app.run(host, port, open_browser=browser)
 
@@ -71,14 +71,14 @@ def clear_cache(grip_class=None):
 
 def render_page(path=None, user_content=False, context=None,
                 username=None, password=None,
-                render_offline=False, render_wide=False, render_inline=False,
+                render_offline=False, render_wide=False, render_header=True, render_inline=False,
                 api_url=None, title=None, text=None, quiet=None,
                 grip_class=None):
     """
     Renders the specified markup text to an HTML page and returns it.
     """
     return create_app(path, user_content, context, username, password,
-                      render_offline, render_wide, render_inline, api_url,
+                      render_offline, render_wide, render_header, render_inline, api_url,
                       title, text, False, quiet, grip_class).render()
 
 
@@ -96,7 +96,7 @@ def render_content(text, user_content=False, context=None, username=None,
 
 def export(path=None, user_content=False, context=None,
            username=None, password=None, render_offline=False,
-           render_wide=False, render_inline=True, out_filename=None,
+           render_wide=False, render_header=True, render_inline=True, out_filename=None,
            api_url=None, title=None, quiet=False, grip_class=None):
     """
     Exports the rendered HTML to a file.
@@ -114,7 +114,7 @@ def export(path=None, user_content=False, context=None,
         print('Exporting to', out_filename, file=sys.stderr)
 
     page = render_page(path, user_content, context, username, password,
-                       render_offline, render_wide, render_inline, api_url,
+                       render_offline, render_wide, render_header, render_inline, api_url,
                        title, None, quiet, grip_class)
 
     if export_to_stdout:

@@ -42,7 +42,7 @@ class Grip(Flask):
     containing a README.
     """
     def __init__(self, source=None, auth=None, renderer=None,
-                 assets=None, render_wide=None, render_inline=None, title=None,
+                 assets=None, render_wide=None, render_header=None, render_inline=None, title=None,
                  autorefresh=None, quiet=None, grip_url=None,
                  static_url_path=None, instance_path=None, **kwargs):
         # Defaults
@@ -50,6 +50,8 @@ class Grip(Flask):
             source = DirectoryReader(source)
         if render_wide is None:
             render_wide = False
+        if render_header is None:
+            render_header = True
         if render_inline is None:
             render_inline = False
 
@@ -104,6 +106,7 @@ class Grip(Flask):
         self.renderer = renderer
         self.assets = assets
         self.render_wide = render_wide
+        self.render_header = render_header
         self.render_inline = render_inline
         self.title = title
         self.quiet = quiet
@@ -207,7 +210,8 @@ class Grip(Flask):
             'index.html', filename=self.reader.filename_for(subpath),
             title=self.title, content=content, favicon=favicon,
             user_content=self.renderer.user_content,
-            wide_style=self.render_wide, style_urls=self.assets.style_urls,
+            header=self.render_header,
+            wide_style=self.render_wide, header_style=self.render_header, style_urls=self.assets.style_urls,
             styles=self.assets.styles, autorefresh_url=autorefresh_url)
 
     def _render_refresh(self, subpath=None):

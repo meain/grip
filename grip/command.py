@@ -24,6 +24,7 @@ Options:
   --pass=<password> A GitHub password or auth token for API auth.
   --wide            Renders wide, i.e. when the side nav is collapsed.
                     This only takes effect when --user-content is used.
+  --no-header       Do not render a hedaer.
   --clear           Clears the cached styles and assets and exits.
   --export          Exports to <path>.html or README.md instead of
                     serving, optionally using [<address>] as the out
@@ -105,7 +106,7 @@ def main(argv=None, force_utf8=True, patch_svg=True):
     if args['--export']:
         try:
             export(args['<path>'], args['--user-content'], args['--context'],
-                   args['--user'], password, False, args['--wide'],
+                   args['--user'], password, False, args['--wide'], not args['--no-header'],
                    not args['--no-inline'], args['<address>'],
                    args['--api-url'], args['--title'], args['--quiet'])
             return 0
@@ -124,7 +125,7 @@ def main(argv=None, force_utf8=True, patch_svg=True):
     # Run server
     try:
         serve(path, host, port, args['--user-content'], args['--context'],
-              args['--user'], password, False, args['--wide'], False,
+              args['--user'], password, False, args['--wide'], not args['--no-header'], False,
               args['--api-url'], args['--title'], not args['--norefresh'],
               args['--browser'], args['--quiet'], None)
         return 0
